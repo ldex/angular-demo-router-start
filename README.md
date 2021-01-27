@@ -11,7 +11,8 @@ Visit www.angularacademy.ca for our list of Angular related courses:
 * Angular Fundamentals
 * Advanced Angular
 * RxJS Workshop
-
+* Angular Architecture
+* Testing Angular
 
 ## Local installation
 
