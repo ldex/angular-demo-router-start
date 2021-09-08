@@ -5,15 +5,16 @@ import { ProductInsertComponent } from './product-insert/product-insert.componen
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductsComponent } from './products.component';
+import { ProductDetailResolve } from '../services/product-detail-resolve.service';
 
 const routes: Routes = [
   {
-    path: 'products',
+    path: '',
     component: ProductsComponent,
     children: [
       { path: '', component: ProductListComponent },
       { path: 'insert', component: ProductInsertComponent },
-      { path: ':id', component: ProductDetailComponent }
+      { path: ':id', component: ProductDetailComponent, resolve: { product: ProductDetailResolve } }
     ]
   }
 ];
