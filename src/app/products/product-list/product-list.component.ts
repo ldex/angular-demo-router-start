@@ -1,6 +1,5 @@
 import { Observable, EMPTY } from 'rxjs';
-import { FavouriteService } from './../../services/favourite.service';
-import { ProductService } from './../../services/product.service';
+import { FavouriteService, ProductService } from './../../services';
 import { Product } from './../product.interface';
 import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@angular/core';
 import { Router } from "@angular/router";
@@ -12,8 +11,11 @@ import { Title } from '@angular/platform-browser';
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.css'],
+    animations: [fadeInAnimation]
 })
 export class ProductListComponent implements OnInit {
+
+    @HostBinding('@fadeInAnimation') animation = true;
 
     title = "Products";
     products$: Observable<Product[]>;
@@ -65,7 +67,7 @@ export class ProductListComponent implements OnInit {
 
     newFavourite(product: Product): void {
         this.message = `Product
-                        ${product.name} 
+                        ${product.name}
                         added to your favourites!`;
     }
 
@@ -76,9 +78,12 @@ export class ProductListComponent implements OnInit {
     constructor(
         private productService: ProductService,
         private favouriteService: FavouriteService,
-        private router: Router) { }
+        private router: Router,
+        private titleService: Title) { }
 
     ngOnInit() {
+        this.titleService.setTitle('Products List');
+
         this.products$ = this
             .productService
             .getProducts()
