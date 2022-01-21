@@ -6,5 +6,5 @@ export const environment = {
 
 export const config = {
   apiUrl: 'https://storerestservice.azurewebsites.net/api/products/',
-  authUrl: 'https://demo2584715.mockable.io/api/login'
+  authUrl: 'https://demo2065076.mockable.io/api/login'
 };
