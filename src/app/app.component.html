@@ -6,16 +6,18 @@
   <nav>
     <a routerLink="/home" routerLinkActive="active">Home</a>
     <a routerLink="/products" routerLinkActive="active">Products</a>
-    <a routerLink="/contact" routerLinkActive="active">Contact</a>
+    <a [routerLink]="[{ outlets: { side: ['contact']} }]" routerLinkActive="active">Contact</a>
     <a routerLink="/admin" routerLinkActive="active">Admin</a>
   </nav>
 </header>
 
 <main>
   <router-outlet></router-outlet>
+  <router-outlet name="side"></router-outlet>
 </main>
 
 <footer>
+  <div *ngIf="loading$ | async" class="modal-loading"></div>
   <hr>
   <a href="http://www.angularacademy.ca" taget="_blank">www.angularacademy.ca</a> 2021 (running Angular v{{version}})
   <div class="right">

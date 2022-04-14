@@ -1,7 +1,8 @@
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { Component, OnInit, VERSION } from '@angular/core';
-import { filter, map } from 'rxjs/operators'
+import { filter, map, tap } from 'rxjs/operators'
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,24 @@ export class AppComponent implements OnInit {
   title = 'Angular Store';
   version = VERSION.full;
 
+  loading$ = this.router.events.pipe(
+    filter(
+      (e) =>
+        e instanceof NavigationStart ||
+        e instanceof NavigationEnd ||
+        e instanceof NavigationCancel ||
+        e instanceof NavigationError
+    ),
+    map((e) => e instanceof NavigationStart),
+    tap(
+      () => this.titleService.setTitle('Generic Title')
+    )
+  );
+
   constructor(
     private authService: AuthService,
-    private router: Router) {
+    private router: Router,
+    private titleService: Title) {
 
     }
 

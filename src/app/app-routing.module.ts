@@ -8,19 +8,28 @@ import { AdminComponent } from './common/admin.component';
 import { ContactComponent } from './common/contact.component';
 import { HomeComponent } from './common/home.component';
 import { environment } from '../environments/environment';
+import { LoginRouteGuardService } from './services/login-route-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo:'/home', pathMatch:'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'contact', component: ContactComponent },
+  { path: 'products', loadChildren: () =>
+                            import('./products/products.module')
+                            .then(m => m.ProductsModule)
+  },
+  { path: 'admin', component: AdminComponent, canActivate: [LoginRouteGuardService] },
+  { path: 'contact', component: ComposeMessageComponent, outlet:'side' },
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo:'/error?reason=NavError' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, {
+    relativeLinkResolution: 'legacy',
+    preloadingStrategy: PreloadAllModules,
+    enableTracing: environment.production ? false : true
+   })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

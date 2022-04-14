@@ -4,16 +4,19 @@ import { fadeInAnimation } from '../animations';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    animations: [fadeInAnimation]
 })
 export class HomeComponent implements OnInit {
-        
+
+    @HostBinding('@fadeInAnimation') animation = true;
+
     constructor(
         private router: Router
     ) { }
 
     ngOnInit(): void {
-        
+
     }
 
 }

@@ -11,8 +11,11 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
+  animations: [slideInOutAnimation]
 })
 export class ProductDetailComponent implements OnInit {
+
+  @HostBinding('@slideInOutAnimation') animation = true;
 
   @Input() product: Product;
   product$: Observable<Product>;
@@ -23,7 +26,8 @@ export class ProductDetailComponent implements OnInit {
     private favouriteService: FavouriteService,
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) { }
 
   deleteProduct(id: number) {
@@ -48,10 +52,14 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.params["id"];
-    if (id) {
-        this.product$ = this.productService.getProductById(id);
-    }
+    this.product = this.route.snapshot.data["product"];
+
+    this.titleService.setTitle('Details for product: ' + this.product.name);
+
+    // let id = this.route.snapshot.params["id"];
+    // if (id) {
+    //     this.product$ = this.productService.getProductById(id);
+    // }
   }
 
 }
