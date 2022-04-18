@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ComposeMessageComponent } from './common/compose-message.component';
+import { ProductsModule } from './products/products.module';
 import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    ProductsModule,
     AppRoutingModule,
     JwtModule.forRoot({
       config: {

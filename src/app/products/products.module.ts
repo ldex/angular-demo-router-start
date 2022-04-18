@@ -9,7 +9,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductInsertComponent } from './product-insert/product-insert.component';
-import { ProductDetailResolve } from '../services/product-detail-resolve.service';
 
 @NgModule({
     imports: [
@@ -26,6 +25,6 @@ import { ProductDetailResolve } from '../services/product-detail-resolve.service
         OrderBy,
         ProductInsertComponent
     ],
-    providers: [ProductService, FavouriteService, ProductDetailResolve],
+    providers: [ProductService, FavouriteService],
 })
 export class ProductsModule { }
