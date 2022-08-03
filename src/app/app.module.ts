@@ -38,7 +38,7 @@ import { JwtModule } from '@auth0/angular-jwt';
         tokenGetter: () => {
           return localStorage.getItem('auth_token');
         },
-        whitelistedDomains: ['localhost:10001', 'storerestservice.azurewebsites.net']
+        allowedDomains: ['localhost:10001', 'storerestservice.azurewebsites.net']
       }
     })
   ],
