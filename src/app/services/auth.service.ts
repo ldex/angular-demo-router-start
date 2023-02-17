@@ -14,7 +14,7 @@ interface LoginResponse {
 export class AuthService {
 
   private loggedIn: boolean = false;
-  private readonly storageTokenKey: string = 'auth_token';
+  private readonly storageTokenKey: string = config.storageTokenKey;
   private baseUrl: string = config.authUrl;
 
   constructor(

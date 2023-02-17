@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment';
+import { config, environment } from './../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -9,26 +9,21 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  private baseUrl: string = 'http://your_rest_api.net/api/profile';
-  private storageKey: string = 'auth_token';
+  private baseUrl: string = config.adminApiUrl;
+  private storageKey: string = config.storageTokenKey;
 
-  getProfile(): Observable<string> {
+  getProfile(): Observable<any> {
 
     const authToken = localStorage.getItem(this.storageKey);
     const headers = {'Authorization': `Bearer ${authToken}` };
 
-    if(environment.demo) {
-
-      // Demo mode
-      return of('Secured info!');
-
-    } else {
-
       // Real server call here!
       return this
               .http
-              .get<string>(this.baseUrl, { headers });
-    }
+              .get<any>(this.baseUrl, { headers })
+              .pipe(
+                map(response => response.profile)
+              );;
   }
 
 }
