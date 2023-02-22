@@ -14,9 +14,10 @@ import { Title } from '@angular/platform-browser';
 })
 export class ProductDetailComponent implements OnInit {
 
-  product$: Observable<Product>;
-
+  @Input() product: Product;
   @Output() favouriteAdded = new EventEmitter<Product>();
+
+  product$: Observable<Product>;
 
   constructor(
     private favouriteService: FavouriteService,
