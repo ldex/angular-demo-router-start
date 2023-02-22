@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { ComposeMessageComponent } from './common/compose-message.component';
 import { ProductsModule } from './products/products.module';
 import { JwtModule } from '@auth0/angular-jwt';
+import { config } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -36,9 +37,9 @@ import { JwtModule } from '@auth0/angular-jwt';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('auth_token');
+          return localStorage.getItem(config.storageTokenKey);
         },
-        allowedDomains: ['localhost:10001', 'storerestservice.azurewebsites.net']
+        allowedDomains: ['localhost:4200', 'storerestservice.azurewebsites.net']
       }
     })
   ],

@@ -1,8 +1,7 @@
 import { Product } from './../products/product.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { flatMap, first, catchError, shareReplay, switchMap, delay } from "rxjs/operators";
+import { Observable, throwError, first, catchError, shareReplay, switchMap, delay, mergeMap } from 'rxjs';
 import { config } from '../../environments/environment';
 
 @Injectable()
@@ -16,7 +15,7 @@ export class ProductService {
 
     deleteProduct(id: number): Observable<any> {
         return this.http
-            .delete(`${this.baseUrl}${id}`); // Delete product from the server            
+            .delete(`${this.baseUrl}${id}`);
     }
 
     insertProduct(newProduct: Product): Observable<Product> {
@@ -28,7 +27,7 @@ export class ProductService {
         return this
             .getProducts()
             .pipe(
-                flatMap(products => products),
+                mergeMap(products => products),
                 first(product => product.id == id),
                 catchError(this.handleError)
             )

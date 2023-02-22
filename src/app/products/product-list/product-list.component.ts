@@ -1,10 +1,9 @@
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, catchError } from 'rxjs';
 import { FavouriteService } from './../../services/favourite.service';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../product.interface';
 import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@angular/core';
 import { Router } from "@angular/router";
-import { catchError } from 'rxjs/operators';
 import { fadeInAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
 
@@ -65,7 +64,7 @@ export class ProductListComponent implements OnInit {
 
     newFavourite(product: Product): void {
         this.message = `Product
-                        ${product.name} 
+                        ${product.name}
                         added to your favourites!`;
     }
 

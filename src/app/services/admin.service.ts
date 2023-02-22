@@ -1,8 +1,7 @@
-import { config, environment } from './../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { config } from './../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class AdminService {
@@ -17,7 +16,6 @@ export class AdminService {
     const authToken = localStorage.getItem(this.storageKey);
     const headers = {'Authorization': `Bearer ${authToken}` };
 
-      // Real server call here!
       return this
               .http
               .get<any>(this.baseUrl, { headers })
