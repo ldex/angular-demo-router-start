@@ -18,13 +18,13 @@
   color: #607D8B;
   background-color: yellow;
   left: .1em;
-} 
+}
 .products li:hover .name,
 .products li:hover .price {
   color: #607D8B;
   background-color: #FFD800;
   left: .1em;
-} 
+}
 
 .products li.selected {
   background-color: #0094FF;
@@ -87,24 +87,3 @@
 .products .discontinued, .products .discontinued *, .errorMessage  {
   color: red !important;
 }
-
-
-/* loading spinner */
-.loading {
-  display: inline-block;
-  overflow: hidden;
-  height: 1.3em;
-  margin-top: -0.3em;
-  line-height: 1.5em;
-  vertical-align: text-bottom;
-}
-
-.loading::after {
-  display: inline-table;
-  white-space: pre;
-  text-align: left;
-  content: "◎◎◎\A◉◎◎\A◎◉◎\A◎◎◉";
-  animation: spin 1s steps(4) infinite;
-}
-
-@keyframes spin  { to { transform: translateY( -6.0em); } }

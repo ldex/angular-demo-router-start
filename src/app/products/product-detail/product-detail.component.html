@@ -10,11 +10,20 @@
         {{product.modifiedDate | date}}</p>
     <p>
       <button (click)="addToFavourites(product)">
-        Add to favourites</button> 
+        Add to favourites</button>
 
-        <button (click)="deleteProduct(product.id)">Delete Product</button>
+        <button (click)="confirm.showModal()">Delete Product</button>
+        <dialog #confirm>
+          <p>Are you sure to delete this product ?</p>
+          <div class="right">
+            <button (click)="deleteProduct(product.id)" autofocus>Ok</button>
+            &nbsp;
+            <button (click)="confirm.close()">Cancel</button>
+          </div>
+        </dialog>
     </p>
     <p>
       <button routerLink="/products">< Back to list</button>
     </p>
 </div>
+

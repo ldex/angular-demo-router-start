@@ -14,7 +14,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class ProductDetailComponent implements OnInit {
 
-  @Input() product: Product;
   product$: Observable<Product>;
 
   @Output() favouriteAdded = new EventEmitter<Product>();
@@ -27,24 +26,23 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
   deleteProduct(id: number) {
-    if (window.confirm('Are you sure to delete this product ?')) {
-      this.productService
-          .deleteProduct(id)
-          .subscribe(
-              () => {
-                  console.log('Product deleted.');
-                  this.productService.clearCache();
-                  this.router.navigateByUrl("/products");
-              },
-              error => console.log('Could not delete product. ' + error),
-              () => console.log('Delete Product Complete.')
-          );
-    }
+    this.productService
+        .deleteProduct(id)
+        .subscribe({
+           next: () => {
+                console.log('Product deleted.');
+                this.productService.clearCache();
+                this.router.navigateByUrl("/products");
+            },
+           error: e => console.log('Could not delete product. ' + e.message)
+          }
+        );
   }
 
   addToFavourites(product: Product) {
     this.favouriteAdded.emit(product);
     this.favouriteService.addToFavourites(product);
+    this.router.navigateByUrl('/products');
   }
 
   ngOnInit() {
