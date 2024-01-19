@@ -33,9 +33,11 @@
     </ul>
   }
 
+  @if (isLoggedIn) {
     <div class="left">
       <a routerLink="insert">Add new product...</a>
     </div>
+  }
 
     <div class="right">
       <button (click)="previousPage()" [disabled]="start == 0">

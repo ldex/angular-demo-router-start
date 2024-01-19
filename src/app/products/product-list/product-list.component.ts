@@ -6,6 +6,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@a
 import { Router } from "@angular/router";
 import { fadeInAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from 'src/app/services';
 
 @Component({
     selector: 'app-product-list',
@@ -27,6 +28,18 @@ export class ProductListComponent implements OnInit {
     start: number = 0;
     end: number = this.pageSize;
     currentPage: number = 1;
+
+    constructor(
+        private productService: ProductService,
+        private favouriteService: FavouriteService,
+        private router: Router,
+        private authService: AuthService) { }
+
+    ngOnInit() {
+        this.products$ = this.productService.products$.pipe(filter(products => products.length > 0))
+        this.productsNumber$ = this.products$.pipe(map(products => products.length))
+        this.productsTotalNumber$ = this.productService.productsTotalNumber$.asObservable()
+    }
 
     firstPage(): void {
         this.start = 0;
@@ -72,14 +85,9 @@ export class ProductListComponent implements OnInit {
         return this.favouriteService.getFavouritesNb();
     }
 
-    constructor(
-        private productService: ProductService,
-        private favouriteService: FavouriteService,
-        private router: Router) { }
+    get isLoggedIn(): boolean {
+        return this.authService.isLoggedIn();
+      }
 
-    ngOnInit() {
-        this.products$ = this.productService.products$.pipe(filter(products => products.length > 0))
-        this.productsNumber$ = this.products$.pipe(map(products => products.length))
-        this.productsTotalNumber$ = this.productService.productsTotalNumber$.asObservable()
-    }
+
 }
