@@ -35,7 +35,7 @@ export class ProductService {
 
     getProducts(skip: number = 0, take: number = 10): Observable<Product[]> {
 
-        let url: string = this.baseUrl + `?$skip=${skip}&$top=${take}&$orderby=ModifiedDate%20desc`;
+        let url = this.baseUrl + `?_start=${skip}&_limit=${take}&_sort=modifiedDate&_order=desc`;
 
         if (!this.products$) {
             this.products$ = this.http
@@ -50,7 +50,7 @@ export class ProductService {
     }
 
     getMoreProducts(skip: number = 0, take: number = 10): Observable<Product[]> {
-        let url: string = this.baseUrl + `?$skip=${skip}&$top=${take}&$orderby=ModifiedDate%20desc`;
+        let url = this.baseUrl + `?_start=${skip}&_limit=${take}&_sort=modifiedDate&_order=desc`;
 
         const combine$: Observable<Product[]> =
             this.products$.pipe(switchMap(

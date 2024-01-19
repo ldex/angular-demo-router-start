@@ -102,18 +102,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "DemoApp:build"
+            "buildTarget": "DemoApp:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "DemoApp:build:production"
+              "buildTarget": "DemoApp:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DemoApp:build"
+            "buildTarget": "DemoApp:build"
           }
         },
         "test": {
