@@ -1,4 +1,4 @@
-import { Observable, EMPTY, catchError } from 'rxjs';
+import { Observable, EMPTY, catchError, filter, map } from 'rxjs';
 import { FavouriteService } from './../../services/favourite.service';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../product.interface';
@@ -16,11 +16,14 @@ export class ProductListComponent implements OnInit {
 
     title = "Products";
     products$: Observable<Product[]>;
-    selectedProduct: Product;
+    productsNumber$: Observable<number>;
+    productsTotalNumber$: Observable<number>;
     sorter = "-modifiedDate";
     errorMessage: string;
+    message: string = "";
 
-    pageSize: number = 5;
+    productsToLoad = this.productService.productsToLoad;
+    pageSize: number = this.productsToLoad / 2;
     start: number = 0;
     end: number = this.pageSize;
     currentPage: number = 1;
@@ -44,9 +47,10 @@ export class ProductListComponent implements OnInit {
     }
 
     loadMore(): void {
-        let take: number = this.pageSize * 2;
-        let skip: number = this.end + 1;
-        this.products$ = this.productService.getMoreProducts(skip, take);
+      let take: number = this.productsToLoad;
+      let skip: number = this.end;
+
+      this.productService.loadProducts(skip, take);
     }
 
     sortList(propertyName: string): void {
@@ -55,12 +59,8 @@ export class ProductListComponent implements OnInit {
     }
 
     onSelect(product: Product): void {
-        this.selectedProduct = product;
         this.router.navigateByUrl("/products/" + product.id);
-        // this.router.navigateByUrl("/products/" + product.id, { state: product });
     }
-
-    message: string = "";
 
     newFavourite(product: Product): void {
         this.message = `Product
@@ -78,16 +78,8 @@ export class ProductListComponent implements OnInit {
         private router: Router) { }
 
     ngOnInit() {
-        this.products$ = this
-            .productService
-            .getProducts()
-            .pipe(
-                catchError(
-                    error => {
-                        this.errorMessage = error;
-                        return EMPTY
-                    }
-                )
-            );
+        this.products$ = this.productService.products$.pipe(filter(products => products.length > 0))
+        this.productsNumber$ = this.products$.pipe(map(products => products.length))
+        this.productsTotalNumber$ = this.productService.productsTotalNumber$.asObservable()
     }
 }

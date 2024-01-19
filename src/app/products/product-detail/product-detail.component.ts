@@ -6,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter, HostBinding } from '@an
 import { ActivatedRoute, Router } from "@angular/router";
 import { slideInOutAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from 'src/app/services';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,8 +24,13 @@ export class ProductDetailComponent implements OnInit {
     private favouriteService: FavouriteService,
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
 
   deleteProduct(id: number) {
     this.productService
@@ -32,7 +38,7 @@ export class ProductDetailComponent implements OnInit {
         .subscribe({
            next: () => {
                 console.log('Product deleted.');
-                this.productService.clearCache();
+                this.productService.clearList();
                 this.router.navigateByUrl("/products");
             },
            error: e => console.log('Could not delete product. ' + e.message)

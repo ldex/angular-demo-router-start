@@ -19,7 +19,11 @@
   <hr>
   <a href="http://www.angularacademy.ca" taget="_blank">www.angularacademy.ca</a> 2024 (using Angular {{version}})
   <div class="right">
-    <a (click)="login()" *ngIf="!isLoggedIn">login</a>
-    <a (click)="logout()" *ngIf="isLoggedIn">logout</a>
+    @if (!isLoggedIn) {
+      <a (click)="login()">login</a>
+    }
+    @if (isLoggedIn) {
+      <a (click)="logout()">logout</a>
+    }
   </div>
 </footer>

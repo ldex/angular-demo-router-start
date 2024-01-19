@@ -1,85 +1,115 @@
-import { Product } from './../products/product.interface';
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, first, catchError, shareReplay, switchMap, delay, mergeMap } from 'rxjs';
-import { config } from '../../environments/environment';
+import { Product } from "./../products/product.interface";
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
+import {
+  Observable,
+  BehaviorSubject,
+  of,
+  first,
+  shareReplay,
+  map,
+  delay,
+  filter,
+  switchMap,
+  mergeMap,
+  tap
+} from "rxjs";
+import { config } from "../../environments/environment";
 
 @Injectable()
 export class ProductService {
+  private baseUrl: string = `${config.apiUrl}/products`;
 
-    private baseUrl: string = config.apiUrl;
+  private products = new BehaviorSubject<Product[]>([]);
+  products$: Observable<Product[]> = this.products.asObservable();
+  mostExpensiveProduct$: Observable<Product>;
+  productsTotalNumber$: BehaviorSubject<number> = new BehaviorSubject(0);
+  productsToLoad = 10;
 
-    private products$: Observable<Product[]>;
+  constructor(private http: HttpClient) {
+    this.loadProducts();
+    this.initMostExpensiveProduct();
+  }
 
-    constructor(private http: HttpClient) { }
+  private initMostExpensiveProduct() {
+    this.mostExpensiveProduct$ = this.products$.pipe(
+      filter((products) => products.length != 0),
+      //or skipWhile(products => products.length == 0),
+      switchMap((products) =>
+        of(products).pipe(
+          map((products) =>
+            [...products].sort((p1, p2) => (p1.price > p2.price ? -1 : 1))
+          ),
+          mergeMap((p) => p), // or mergeAll(),
+          first() // complete!
+        )
+      )
+    );
+  }
 
-    deleteProduct(id: number): Observable<any> {
-        return this.http
-            .delete(`${this.baseUrl}${id}`);
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(this.baseUrl + '/' + id);
+  }
+
+  insertProduct(newProduct: Product): Observable<Product> {
+    newProduct.modifiedDate = new Date();
+    return this.http.post<Product>(this.baseUrl, newProduct);
+  }
+
+  updateProduct(id: number, updatedProduct: Product): Observable<Product> {
+    updatedProduct.id = id;
+    updatedProduct.modifiedDate = new Date();
+    return this.http.put<Product>(this.baseUrl + '/' + id, updatedProduct);
+  }
+
+  getProduct(id: number | string): Observable<Product> {
+    let url: string = this.baseUrl + '/' + id;
+    return this.http.get<Product>(url);
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this.products$.pipe(
+      mergeMap((p) => p),
+      first((product) => product.id == id)
+    );
+  }
+
+  loadProducts(skip: number = 0, take: number = this.productsToLoad): void {
+    if (skip == 0 && this.products.value.length > 0) return;
+
+    const params = {
+        _start: skip,
+        _limit: take,
+        _sort: 'modifiedDate',
+        _order: 'desc'
     }
 
-    insertProduct(newProduct: Product): Observable<Product> {
-        return this.http
-            .post<Product>(this.baseUrl, newProduct);
-    }
+    const options = {
+      params: params,
+      observe: 'response' as 'response' // in order to read params from the response header
+    };
 
-    getProductById(id: number): Observable<Product> {
-        return this
-            .getProducts()
-            .pipe(
-                mergeMap(products => products),
-                first(product => product.id == id),
-                catchError(this.handleError)
-            )
-    }
+    this.http
+      .get(this.baseUrl, options)
+      .pipe(
+        delay(500),
+        tap(response => {
+          let count = response.headers.get('X-Total-Count') // total number of products
+          if(count)
+            this.productsTotalNumber$.next(Number(count))
+        }),
+        shareReplay()
+      )
+      .subscribe((response: HttpResponse<Product[]>) => {
+        let newProducts = response.body;
+        let currentProducts = this.products.value;
+        let mergedProducts = currentProducts.concat(newProducts);
+        this.products.next(mergedProducts);
+      });
+  }
 
-    getProducts(skip: number = 0, take: number = 10): Observable<Product[]> {
-
-        let url = this.baseUrl + `?_start=${skip}&_limit=${take}&_sort=modifiedDate&_order=desc`;
-
-        if (!this.products$) {
-            this.products$ = this.http
-                .get<any>(url)
-                .pipe(
-                    delay(2000),
-                    shareReplay(),
-                    catchError(this.handleError)
-                );
-        }
-        return this.products$;
-    }
-
-    getMoreProducts(skip: number = 0, take: number = 10): Observable<Product[]> {
-        let url = this.baseUrl + `?_start=${skip}&_limit=${take}&_sort=modifiedDate&_order=desc`;
-
-        const combine$: Observable<Product[]> =
-            this.products$.pipe(switchMap(
-                res => { return this.http.get<Product[]>(url).pipe(shareReplay()) },
-                (currentProducts, moreProducts) => currentProducts.concat(moreProducts)
-            ));
-        this.products$ = combine$.pipe(shareReplay());
-
-        return this.products$;
-    }
-
-    clearCache() {
-        this.products$ = null;
-    }
-
-    private handleError(errorResponse: HttpErrorResponse) {
-        // in a real world app, you may send the error to the server using some remote logging infrastructure
-        // instead of just logging it to the console
-        let errorMsg: string;
-        if (errorResponse.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            errorMsg = 'An error occurred:' + errorResponse.error.message;
-        } else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong.
-            errorMsg = `Backend returned code ${errorResponse.status}, body was: ${errorResponse.error}`;
-        }
-        console.error(errorMsg);
-        // return an observable with a user-facing error message
-        return throwError('Something bad happened; please try again later.');
-    }
+  clearList() {
+    this.products.next([]);
+    this.loadProducts();
+  }
 }

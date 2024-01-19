@@ -1,19 +1,11 @@
-<div *ngIf="errorMessage" class="errorMessage">
-  {{ errorMessage }}
-</div>
-
-<div *ngIf="!errorMessage">
   <h3>{{ message }}</h3>
 
-  <ng-template #loading>
-    <h1 class="loading">Loading products</h1>
-  </ng-template>
-
-  <div *ngIf="products$ | async as products;else loading">
+  @if ((products$ | async)?.length > 0) {
 
     <div class="right">
-      {{ products.length }} products listed
-      /
+      {{ productsNumber$ | async  }} products listed
+      |
+      {{ productsTotalNumber$ | async }} on server |
       <span>
         {favourites, plural,
         =0 {no favourite}
@@ -23,6 +15,7 @@
       </span>
     </div>
 
+    @if (products$ | async; as products) {
     <div>
       <button (click)="sortList('price')">Sort by price</button>
       <button (click)="sortList('name')">Sort by name</button>
@@ -30,24 +23,46 @@
     </div>
 
     <ul class="products">
-      <li *ngFor="let product of products | orderBy:[sorter] | slice:start:end" [title]="product | json" (click)="onSelect(product)"
-        [class.discontinued]="product.discontinued" [class.selected]="product === selectedProduct">
-        <span class="name">{{ product.name | uppercase }}</span>
-        <span class="description">{{ product.description }}</span>
-        <span class="price">{{ product.price | currency:'CAD':'symbol-narrow':'.2' }}</span>
-      </li>
+      @for (product of products | orderBy: [sorter] | slice: start:end; track product.id) {
+        <li [title]="product | json" (click)="onSelect(product)">
+          <span class="name">{{ product.name | uppercase }}</span>
+          <span class="description">{{ product.description }}</span>
+          <span class="price">{{ product.price | currency:'CAD':'symbol-narrow':'.2' }}</span>
+        </li>
+      }
     </ul>
+  }
 
     <div class="left">
       <a routerLink="insert">Add new product...</a>
     </div>
 
     <div class="right">
-      <button (click)="previousPage()" [disabled]="start == 0">< Previous Page</button>
+      <button (click)="previousPage()" [disabled]="start == 0">
+        < Previous Page
+      </button>
       Page {{ currentPage }}
-      <button (click)="nextPage()" *ngIf="products.length > end">Next Page ></button>
-      <button (click)="loadMore()" *ngIf="products.length <= end">Load more...</button>
+      @if ((productsNumber$ | async) > end) {
+        <button
+          (click)="nextPage()"
+          >
+          Next Page >
+        </button>
+      }
+      @if (
+        (productsNumber$ | async) <= end &&
+        (productsNumber$ | async) < (productsTotalNumber$ | async)
+        ) {
+        <button
+          (click)="loadMore()"
+          >
+          Load {{productsToLoad}} more...
+        </button>
+      }
     </div>
 
-  </div>
-</div>
+
+
+} @else {
+  <h1 class="loading">Loading products</h1>
+}
