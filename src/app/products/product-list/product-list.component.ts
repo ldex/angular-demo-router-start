@@ -3,7 +3,7 @@ import { FavouriteService } from './../../services/favourite.service';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../product.interface';
 import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@angular/core';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { fadeInAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services';
@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services';
 @Component({
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
-    styleUrls: ['./product-list.component.css'],
+    styleUrl: './product-list.component.css',
 })
 export class ProductListComponent implements OnInit {
 
@@ -33,6 +33,7 @@ export class ProductListComponent implements OnInit {
         private productService: ProductService,
         private favouriteService: FavouriteService,
         private router: Router,
+        private route: ActivatedRoute,
         private authService: AuthService) { }
 
     ngOnInit() {
@@ -72,7 +73,7 @@ export class ProductListComponent implements OnInit {
     }
 
     onSelect(product: Product): void {
-        this.router.navigateByUrl("/products/" + product.id);
+        this.router.navigate(['/products', product.id], {relativeTo: this.route});
     }
 
     newFavourite(product: Product): void {
