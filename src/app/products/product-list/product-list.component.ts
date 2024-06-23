@@ -3,15 +3,27 @@ import { FavouriteService } from './../../services/favourite.service';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../product.interface';
 import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { fadeInAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services';
+import { OrderBy } from '../orderBy.pipe';
+import { AsyncPipe, UpperCasePipe, JsonPipe, SlicePipe, CurrencyPipe } from '@angular/common';
 
 @Component({
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.css',
+    standalone: true,
+    imports: [
+        RouterLink,
+        AsyncPipe,
+        UpperCasePipe,
+        JsonPipe,
+        SlicePipe,
+        CurrencyPipe,
+        OrderBy,
+    ],
 })
 export class ProductListComponent implements OnInit {
 

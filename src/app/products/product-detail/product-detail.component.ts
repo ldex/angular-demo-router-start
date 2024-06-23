@@ -3,15 +3,24 @@ import { ProductService } from './../../services/product.service';
 import { FavouriteService } from './../../services/favourite.service';
 import { Product } from './../product.interface';
 import { Component, OnInit, Input, Output, EventEmitter, HostBinding } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { slideInOutAnimation } from 'src/app/animations';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services';
+import { AsyncPipe, UpperCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-product-detail',
-  templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css',
+    selector: 'app-product-detail',
+    templateUrl: './product-detail.component.html',
+    styleUrl: './product-detail.component.css',
+    standalone: true,
+    imports: [
+        RouterLink,
+        AsyncPipe,
+        UpperCasePipe,
+        CurrencyPipe,
+        DatePipe,
+    ],
 })
 export class ProductDetailComponent implements OnInit {
 

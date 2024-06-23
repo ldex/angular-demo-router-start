@@ -4,7 +4,8 @@ import { fadeInAnimation } from '../animations';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    standalone: true
 })
 export class HomeComponent implements OnInit {
         

@@ -1,12 +1,14 @@
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Component, ViewChild, AfterViewInit, ElementRef, OnInit, HostBinding } from '@angular/core';
-import { NgForm } from "@angular/forms";
+import { NgForm, FormsModule } from "@angular/forms";
 import { fadeInAnimation } from '../animations';
 
 @Component({
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: ['./login.component.css'],
+    standalone: true,
+    imports: [FormsModule]
 })
 export class LoginComponent implements AfterViewInit, OnInit {
     error = '';

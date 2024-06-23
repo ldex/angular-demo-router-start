@@ -3,7 +3,8 @@ import { Component, HostBinding } from '@angular/core';
 import { fadeInAnimation } from '../animations';
 
 @Component({
-    templateUrl: './admin.component.html'
+    templateUrl: './admin.component.html',
+    standalone: true
 })
 export class AdminComponent {
     constructor(private adminService: AdminService) { }
