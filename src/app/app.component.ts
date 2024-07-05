@@ -2,13 +2,14 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
 import { AuthService } from './services/auth.service';
 import { Component, OnInit, VERSION } from '@angular/core';
 import { filter, map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, RouterOutlet]
+    imports: [RouterLink, RouterLinkActive, RouterOutlet, AsyncPipe]
 })
 export class AppComponent implements OnInit {
   title = 'Angular Store';
