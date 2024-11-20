@@ -30,13 +30,11 @@ export class ProductListComponent implements OnInit {
     title = "Products";
     products$: Observable<Product[]>;
     productsNumber$: Observable<number>;
-    productsTotalNumber$: Observable<number>;
     sorter = "-modifiedDate";
     errorMessage: string;
     message: string = "";
 
-    productsToLoad = this.productService.productsToLoad;
-    pageSize: number = this.productsToLoad / 2;
+    pageSize: number = 5;
     start: number = 0;
     end: number = this.pageSize;
     currentPage: number = 1;
@@ -51,7 +49,6 @@ export class ProductListComponent implements OnInit {
     ngOnInit() {
         this.products$ = this.productService.products$.pipe(filter(products => products.length > 0))
         this.productsNumber$ = this.products$.pipe(map(products => products.length))
-        this.productsTotalNumber$ = this.productService.productsTotalNumber$.asObservable()
     }
 
     firstPage(): void {
@@ -73,10 +70,7 @@ export class ProductListComponent implements OnInit {
     }
 
     loadMore(): void {
-      let take: number = this.productsToLoad;
-      let skip: number = this.end;
-
-      this.productService.loadProducts(skip, take);
+      this.productService.loadProducts();
     }
 
     sortList(propertyName: string): void {

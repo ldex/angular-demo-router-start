@@ -3,9 +3,7 @@
   @if ((products$ | async)?.length > 0) {
 
     <div class="right">
-      {{ productsNumber$ | async  }} products listed
-      |
-      {{ productsTotalNumber$ | async }} on server |
+      {{ productsNumber$ | async  }} products listed |
       <span>
         {favourites, plural,
         =0 {no favourite}
@@ -51,14 +49,11 @@
           Next Page >
         </button>
       }
-      @if (
-        (productsNumber$ | async) <= end &&
-        (productsNumber$ | async) < (productsTotalNumber$ | async)
-        ) {
+      @if ((productsNumber$ | async) <= end) {
         <button
           (click)="loadMore()"
           >
-          Load {{productsToLoad}} more...
+          Load 10 more...
         </button>
       }
     </div>
