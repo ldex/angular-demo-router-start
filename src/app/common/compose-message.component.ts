@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 @Component({
     templateUrl: './compose-message.component.html',
     styleUrl: './compose-message.component.css',
-    standalone: true,
     imports: [FormsModule]
 })
 export class ComposeMessageComponent {

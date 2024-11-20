@@ -6,7 +6,6 @@ import { RouterOutlet } from '@angular/router';
     <h2>Products</h2>
     <router-outlet></router-outlet>
   `,
-    standalone: true,
     imports: [RouterOutlet]
 })
 export class ProductsComponent { }

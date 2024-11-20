@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormsModule, ReactiveF
     selector: 'app-product-insert',
     templateUrl: './product-insert.component.html',
     styleUrl: './product-insert.component.css',
-    standalone: true,
     imports: [FormsModule, ReactiveFormsModule]
 })
 export class ProductInsertComponent implements OnInit {

@@ -13,14 +13,13 @@ import { AsyncPipe, UpperCasePipe, CurrencyPipe, DatePipe } from '@angular/commo
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css',
-    standalone: true,
     imports: [
         RouterLink,
         AsyncPipe,
         UpperCasePipe,
         CurrencyPipe,
         DatePipe,
-    ],
+    ]
 })
 export class ProductDetailComponent implements OnInit {
 

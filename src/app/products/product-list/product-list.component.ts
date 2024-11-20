@@ -14,7 +14,6 @@ import { AsyncPipe, UpperCasePipe, JsonPipe, SlicePipe, CurrencyPipe } from '@an
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.css',
-    standalone: true,
     imports: [
         RouterLink,
         AsyncPipe,
@@ -23,7 +22,7 @@ import { AsyncPipe, UpperCasePipe, JsonPipe, SlicePipe, CurrencyPipe } from '@an
         SlicePipe,
         CurrencyPipe,
         OrderBy,
-    ],
+    ]
 })
 export class ProductListComponent implements OnInit {
 
