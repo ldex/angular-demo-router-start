@@ -1,6 +1,5 @@
 import { AdminService } from './../services/admin.service';
-import { Component, HostBinding } from '@angular/core';
-import { fadeInAnimation } from '../animations';
+import { Component } from '@angular/core';
 
 @Component({
     templateUrl: './admin.component.html',
