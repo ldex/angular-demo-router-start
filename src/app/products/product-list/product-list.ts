@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { Product } from '../../models/product';
 import { CurrencyPipe, JsonPipe, SlicePipe, UpperCasePipe } from '@angular/common';
 import { ProductService } from '../product-service';
@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-product-list',
   imports: [UpperCasePipe, CurrencyPipe, OrderByPipe, JsonPipe, SlicePipe, RouterLink],
   templateUrl: './product-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './product-list.css',
 })
 export class ProductList {

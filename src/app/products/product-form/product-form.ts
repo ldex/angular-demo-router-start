@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   form,
   required,
   minLength,
-  Field,
+  FormField,
   maxLength,
   pattern,
   min,
@@ -17,8 +17,9 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
-  imports: [Field],
+  imports: [FormField],
   templateUrl: './product-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './product-form.css',
 })
 export class ProductForm {

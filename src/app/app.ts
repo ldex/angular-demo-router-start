@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, VERSION } from '@angular/core';
+import { Component, computed, inject, signal, VERSION, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './core/auth-service';
 import { debounceTime, filter, map, startWith } from 'rxjs';
@@ -7,6 +7,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './app.html'
 })
 export class App {

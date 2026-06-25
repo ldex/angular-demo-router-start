@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-contact',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `
         <h2>Contact Us</h2>
         <div style="margin-bottom: 80px">
